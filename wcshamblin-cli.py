@@ -25,17 +25,20 @@ Source Code
                            enter to execute
 """,
 ]
-
-def clear():
-    system('cls' if name == 'nt' else 'clear')
-
 posix = True
+def clear():
+    system('clear')
+if name == 'nt':
+    posix = False
+    def clear():
+        system('cls')
+
+
 def get_getch():
     try:
         import termios
     except ImportError as error:
         # Not POSIX
-        posix = False
         import msvcrt
         return msvcrt.getch
     import sys, tty
@@ -50,6 +53,9 @@ def get_getch():
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
     return getch
+
+getch = get_getch()
+
 if posix:
     def menuhandle(pos):
         ch = getch()
@@ -89,7 +95,6 @@ else:
             exit()
         return pos
 
-getch = get_getch()
 
 clear()
 i=0
