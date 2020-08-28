@@ -56,23 +56,15 @@ print(menu[i])
 
 while 1:
     ch = getch()
-    if ch == "\x1b" or ch == b"\xe0": # ANSI escape
+    if ch == "\x1b" or ch == "\xe0": # ANSI escape
         ch = getch()
         if ch == "[": # Func call
             ch = getch()
-            if ch == "A" and i>0: # Up arrow
+            if ch == "A" or ch == "H" and i>0: # Up arrow
                 i-=1
                 clear()
                 print(menu[i])
-            if ch == "B" and i<len(menu)-1: # Down arrow
-                i+=1
-                clear()
-                print(menu[i])
-        if ch == "H" and i>0: # Up arrow
-            i-=1
-            clear()
-            print(menu[i])
-        if ch == "P" and i<len(menu)-1: # Down arrow
+            if ch == "B" or ch == "P" and i<len(menu)-1: # Down arrow
                 i+=1
                 clear()
                 print(menu[i])
