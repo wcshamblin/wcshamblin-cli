@@ -49,6 +49,7 @@ def get_getch():
         return ch
     return getch
 getch = get_getch()
+
 clear()
 i=0
 print(menu[i])
@@ -67,7 +68,16 @@ while 1:
                 i+=1
                 clear()
                 print(menu[i])
-
+    if ch == "\xe0": # ANSI escape
+        ch = getch()
+        if ch == "H" and i>0: # Up arrow
+            i-=1
+            clear()
+            print(menu[i])
+        if ch == "P" and i<len(menu)-1: # Down arrow
+                i+=1
+                clear()
+                print(menu[i])
     if ch == "\r":
         print("Selected")
     if ch == "q" or ch == "e":
