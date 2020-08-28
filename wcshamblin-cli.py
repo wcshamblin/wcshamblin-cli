@@ -29,9 +29,6 @@ Source Code
 def clear():
     system('cls' if name == 'nt' else 'clear')
 
-# def menudex(action):
-#     if action == "up":
-        
 
 def get_getch():
     try:
@@ -64,14 +61,23 @@ while 1:
         ch = getch()
         if ch == "[": # Func call
             ch = getch()
-            if ch == "A" or ch == b"H" and i>0: # Up arrow
+            if ch == "A" and i>0: # Up arrow
                 i-=1
                 clear()
                 print(menu[i])
-            if ch == "B" or ch == b"P" and i<len(menu)-1: # Down arrow
+            if ch == "B" and i<len(menu)-1: # Down arrow
                 i+=1
                 clear()
                 print(menu[i])
+        if ch == b"P" and i>0: # Up arrow
+            i-=1
+            clear()
+            print(menu[i])
+        if ch == b"Q" and i<len(menu)-1: # Down arrow
+            i+=1
+            clear()
+            print(menu[i])
+
 
     if ch == "\r" or ch == b"\r":
         print("Selected")
