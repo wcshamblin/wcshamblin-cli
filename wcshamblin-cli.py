@@ -29,6 +29,10 @@ Source Code
 def clear():
     system('cls' if name == 'nt' else 'clear')
 
+# def menudex(action):
+#     if action == "up":
+        
+
 def get_getch():
     try:
         import termios
@@ -69,7 +73,7 @@ while 1:
                 clear()
                 print(menu[i])
 
-    if ch == "\r":
+    if ch == "\r" or ch == b"\r":
         print("Selected")
-    if ch == "q" or ch == "e":
+    if ch == "q" or ch == b"q":
         exit()
