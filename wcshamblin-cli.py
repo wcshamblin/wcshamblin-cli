@@ -29,12 +29,13 @@ Source Code
 def clear():
     system('cls' if name == 'nt' else 'clear')
 
-
+posix = True
 def get_getch():
     try:
         import termios
     except ImportError as error:
         # Not POSIX
+        posix = False
         import msvcrt
         return msvcrt.getch
     import sys, tty
@@ -49,6 +50,45 @@ def get_getch():
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
     return getch
+if posix:
+    def menuhandle(pos):
+        ch = getch()
+        if ch == "\x1b": # ANSI escape
+            ch = getch()
+            if ch == "[": # Func call
+                ch = getch()
+                if ch == "A" and pos>0: # Up arrow
+                    pos-=1
+                    clear()
+                    print(menu[pos])
+                if ch == "B" and pos<len(menu)-1: # Down arrow
+                    pos+=1
+                    clear()
+                    print(menu[pos])
+        if ch == "\r":
+            print("Selected")
+        if ch == "q":
+            exit()
+        return pos
+else:
+    def menuhandle():
+        ch = getch()
+        if ch == b"\xe0": # ANSI escape
+            ch = getch()
+            if ch == b"P" and i>0: # Up arrow
+                pos-=1
+                clear()
+                print(menu[pos])
+            if ch == b"Q" and pos<len(menu)-1: # Down arrow
+                pos+=1
+                clear()
+                print(menu[pos])
+        if ch == b"\r":
+            print("Selected")
+        if ch == b"q":
+            exit()
+        return pos
+
 getch = get_getch()
 
 clear()
@@ -56,30 +96,4 @@ i=0
 print(menu[i])
 
 while 1:
-    ch = getch()
-    if ch == "\x1b" or ch == b"\xe0": # ANSI escape
-        ch = getch()
-        if ch == "[": # Func call
-            ch = getch()
-            if ch == "A" and i>0: # Up arrow
-                i-=1
-                clear()
-                print(menu[i])
-            if ch == "B" and i<len(menu)-1: # Down arrow
-                i+=1
-                clear()
-                print(menu[i])
-        if ch == b"P" and i>0: # Up arrow
-            i-=1
-            clear()
-            print(menu[i])
-        if ch == b"Q" and i<len(menu)-1: # Down arrow
-            i+=1
-            clear()
-            print(menu[i])
-
-
-    if ch == "\r" or ch == b"\r":
-        print("Selected")
-    if ch == "q" or ch == b"q":
-        exit()
+    i = menuhandle(i)
