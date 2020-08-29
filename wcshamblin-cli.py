@@ -1,8 +1,8 @@
 from os import system, name, environ
 from shutil import get_terminal_size
 import sys
-menu = [
-"""\u001b[0m\u001b[7mWebsite\u001b[0m
+from webbrowser import open_new_tab
+menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
 
 Stuff
 
@@ -11,8 +11,7 @@ More Stuff
 Other Stuff
 
 Source Code
-""",
-"""Website
+""", "action": None},"Stuff": {"menu": """Website
 
 \u001b[0m\u001b[7mStuff\u001b[0m
 
@@ -21,8 +20,7 @@ More Stuff
 Other Stuff
 
 Source Code
-""",
-"""Website
+""", "action": None}, "More Stuff": {"menu": """Website
 
 Stuff
 
@@ -31,8 +29,7 @@ Stuff
 Other Stuff
 
 Source Code
-""",
-"""Website
+""", "action": None}, "Other Stuff": {"menu": """Website
 
 Stuff
 
@@ -41,8 +38,7 @@ More Stuff
 \u001b[0m\u001b[7mOther Stuff\u001b[0m
 
 Source Code
-""",
-"""Website
+""", "action": None}, "Source Code": {"menu": """Website
                                          ___  
 Stuff                                   |__ \\ 
                                            ) |
@@ -51,12 +47,14 @@ More Stuff                                / /
 Other Stuff                               _
                                          (_)  
 \u001b[0m\u001b[7mSource Code\u001b[0m
-""",
-]
+""", "action": None}}
+
+
+menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 midlim = int(termsize[0]/2)
-helplines = "\n"*(termsize[1]-(len(menu[0].split("\n"))+2))+" "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
+helplines = "\n"*(termsize[1]-(len(menu[menudex[0]]["menu"].split("\n"))+2))+" "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
 
 posix = True
 if name == 'nt':
@@ -103,10 +101,10 @@ if posix:
                 ch = getch()
                 if ch == "A" and pos>0: # Up arrow
                     pos-=1
-                    print(menu[pos], helplines)
+                    print(menu[menudex[pos]]["menu"], helplines)
                 if ch == "B" and pos<len(menu)-1: # Down arrow
                     pos+=1
-                    print(menu[pos], helplines)
+                    print(menu[menudex[pos]]["menu"], helplines)
         if ch == "\r":
             print("Selected")
         if ch == "q":
@@ -120,17 +118,17 @@ else:
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
                 clear()
-                print(menu[pos],helplines)
+                print(menu[menudex[pos]]["menu"],helplines)
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
                 clear()
-                print(menu[pos], helplines)
+                print(menu[menudex[pos]]["menu"], helplines)
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
             exit()
         return pos
 i=0
-print(menu[0], helplines)
+print(menu[menudex[0]]["menu"], helplines)
 while 1:
     i = menuhandle(i)
