@@ -119,12 +119,12 @@ else:
             ch = getch()
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                print(menu[pos],helplines)
                 clear()
+                print(menu[pos],helplines)
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                print(menu[pos], helplines)
                 clear()
+                print(menu[pos], helplines)
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
