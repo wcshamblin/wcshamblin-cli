@@ -56,23 +56,22 @@ Other Stuff                               _
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 midlim = int(termsize[0]/2)
-helplines = " "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
+helplines = "\n"*(termsize[1]-(len(menu[0].split("\n"))+2))+" "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
 
 posix = True
 if name == 'nt':
     posix = False
 
-if not posix: # rewriting is faster than clearing on Windows
-    def push_buffer():
-        system('cls') # ANSI codes don't work without rewriting on CMD + powershell
-    push_buffer()
-    print(menu[0], helplines)
-else:
-    pushlen = termsize[1] - len(menu[0].split("\n"))-3 # ?
-    def push_buffer():
-        print("\n" * pushlen)
-    print(menu[0], helplines)
-    push_buffer()
+# if not posix: # rewriting is faster than clearing on Windows
+#     def push_buffer():
+#         system('cls') # ANSI codes don't work without rewriting on CMD + powershell
+#     push_buffer()
+#     print(menu[0], helplines)
+# else:
+#     pushlen = termsize[1] - len(menu[0].split("\n"))-3 # ?
+#     def push_buffer():
+#         print("\n" * pushlen)
+#     print(menu[0], helplines)
 
 # def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
 #     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
@@ -111,11 +110,9 @@ if posix:
                 if ch == "A" and pos>0: # Up arrow
                     pos-=1
                     print(menu[pos], helplines)
-                    push_buffer()
                 if ch == "B" and pos<len(menu)-1: # Down arrow
                     pos+=1
                     print(menu[pos], helplines)
-                    push_buffer()
         if ch == "\r":
             print("Selected")
         if ch == "q":
@@ -128,11 +125,9 @@ else:
             ch = getch()
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                push_buffer()
                 print(menu[pos],helplines)
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                push_buffer()
                 print(menu[pos], helplines)
         if ch == b"\r":
             print("Selected")
@@ -140,5 +135,6 @@ else:
             exit()
         return pos
 i=0
+print(menu[0], helplines)
 while 1:
     i = menuhandle(i)
