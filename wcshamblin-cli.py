@@ -102,12 +102,12 @@ else:
             ch = getch()
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                push_buffer()
                 print(menu[pos])
+                push_buffer()
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                push_buffer()
                 print(menu[pos])
+                push_buffer()
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
