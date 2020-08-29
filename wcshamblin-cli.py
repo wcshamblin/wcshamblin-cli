@@ -38,7 +38,7 @@ if name == 'nt':
 #     return supported_platform and is_a_tty
 
 termsize = get_terminal_size() # Returns tuple (x, y)
-if not posix:
+if not posix: # rewriting is faster than clearing on Windows
     def push_buffer():
         system('cls')
 else:
@@ -95,12 +95,12 @@ else:
             ch = getch()
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                print(menu[pos])
                 push_buffer()
+                print(menu[pos])
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                print(menu[pos])
                 push_buffer()
+                print(menu[pos])
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
