@@ -62,16 +62,10 @@ posix = True
 if name == 'nt':
     posix = False
 
-# if not posix: # rewriting is faster than clearing on Windows
-#     def push_buffer():
-#         system('cls') # ANSI codes don't work without rewriting on CMD + powershell
-#     push_buffer()
-#     print(menu[0], helplines)
-# else:
-#     pushlen = termsize[1] - len(menu[0].split("\n"))-3 # ?
-#     def push_buffer():
-#         print("\n" * pushlen)
-#     print(menu[0], helplines)
+if not posix: # rewriting is faster than pushing out of buffer on Windows
+    def clear():
+        system('cls') # ANSI codes don't work without rewriting on CMD + powershell
+    clear()
 
 # def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
 #     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
@@ -126,9 +120,11 @@ else:
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
                 print(menu[pos],helplines)
+                clear()
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
                 print(menu[pos], helplines)
+                clear()
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
