@@ -6,25 +6,21 @@ menu = [
 
 Stuff
 
-More stuff
+More Stuff
 
-Other stuff
+Other Stuff
 
 Source Code
-                    arrows to navigate, q to exit
-                          enter to execute
 """,
 """Website
 
 \u001b[0m\u001b[7mStuff\u001b[0m
 
-More stuff
+More Stuff
 
-Other stuff
+Other Stuff
 
 Source Code
-                    arrows to navigate, q to exit
-                          enter to execute
 """,
 """Website
 
@@ -32,53 +28,50 @@ Stuff
 
 \u001b[0m\u001b[7mMore Stuff\u001b[0m
 
-Other stuff
+Other Stuff
 
 Source Code
-                    arrows to navigate, q to exit
-                          enter to execute
 """,
 """Website
 
 Stuff
 
-More stuff
+More Stuff
 
 \u001b[0m\u001b[7mOther Stuff\u001b[0m
 
 Source Code
-                    arrows to navigate, q to exit
-                          enter to execute
 """,
 """Website
-
-Stuff
-
-More stuff
-
-Other stuff
-
+                                         ___  
+Stuff                                   |__ \\ 
+                                           ) |
+More Stuff                                / / 
+                                         |_|  
+Other Stuff                               _
+                                         (_)  
 \u001b[0m\u001b[7mSource Code\u001b[0m
-                    arrows to navigate, q to exit
-                          enter to execute
 """,
 ]
+
+termsize = get_terminal_size() # Returns tuple (x, y)
+midlim = int(termsize[0]/2)
+helplines = " "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
 
 posix = True
 if name == 'nt':
     posix = False
 
-termsize = get_terminal_size() # Returns tuple (x, y)
 if not posix: # rewriting is faster than clearing on Windows
     def push_buffer():
         system('cls') # ANSI codes don't work without rewriting on CMD + powershell
     push_buffer()
-    print(menu[0])
+    print(menu[0], helplines)
 else:
-    pushlen = termsize[1] - len(menu[0].split("\n"))-2 # ?
+    pushlen = termsize[1] - len(menu[0].split("\n"))-3 # ?
     def push_buffer():
         print("\n" * pushlen)
-    print(menu[0])
+    print(menu[0], helplines)
     push_buffer()
 
 # def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
@@ -117,11 +110,11 @@ if posix:
                 ch = getch()
                 if ch == "A" and pos>0: # Up arrow
                     pos-=1
-                    print(menu[pos])
+                    print(menu[pos], helplines)
                     push_buffer()
                 if ch == "B" and pos<len(menu)-1: # Down arrow
                     pos+=1
-                    print(menu[pos])
+                    print(menu[pos], helplines)
                     push_buffer()
         if ch == "\r":
             print("Selected")
@@ -136,11 +129,11 @@ else:
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
                 push_buffer()
-                print(menu[pos])
+                print(menu[pos],helplines)
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
                 push_buffer()
-                print(menu[pos])
+                print(menu[pos], helplines)
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
