@@ -26,6 +26,42 @@ Source Code
                     arrows to navigate, q to exit
                           enter to execute
 """,
+"""Website
+
+Stuff
+
+\u001b[0m\u001b[7mMore Stuff\u001b[0m
+
+Other stuff
+
+Source Code
+                    arrows to navigate, q to exit
+                          enter to execute
+""",
+"""Website
+
+Stuff
+
+More stuff
+
+\u001b[0m\u001b[7mOther Stuff\u001b[0m
+
+Source Code
+                    arrows to navigate, q to exit
+                          enter to execute
+""",
+"""Website
+
+Stuff
+
+More stuff
+
+Other stuff
+
+\u001b[0m\u001b[7mSource Code\u001b[0m
+                    arrows to navigate, q to exit
+                          enter to execute
+""",
 ]
 
 posix = True
@@ -110,7 +146,6 @@ else:
         if ch == b"q":
             exit()
         return pos
-
 i=0
 while 1:
     i = menuhandle(i)
