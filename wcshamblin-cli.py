@@ -1,4 +1,6 @@
-from os import system, name
+from os import system, name, environ
+from shutil import get_terminal_size
+import sys
 menu = [
 """\u001b[0m\u001b[7mWebsite\u001b[0m
 
@@ -9,8 +11,8 @@ More stuff
 Other stuff
 
 Source Code
-                    🠕 🠗 to navigate, q or e to exit
-                           enter to execute
+                    arrows to navigate, q to exit
+                          enter to execute
 """,
 """Website
 
@@ -21,18 +23,35 @@ More stuff
 Other stuff
 
 Source Code
-                    🠕 🠗 to navigate, q or e to exit
-                           enter to execute
+                    arrows to navigate, q to exit
+                          enter to execute
 """,
 ]
+
 posix = True
-def clear():
-    system('clear')
 if name == 'nt':
     posix = False
-    def clear():
-        system('cls')
 
+# def supports_color():
+#     plat = sys.platform
+#     supported_platform = plat != 'Pocket PC' and (plat != 'win32' or
+#                                                   'ANSICON' in environ)
+#     # isatty is not always implemented, #6223.
+#     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+#     return supported_platform and is_a_tty
+
+termsize = get_terminal_size() # Returns tuple (x, y)
+# if not termsize:
+#     if not posix:
+#         def push_buffer():
+#             system('cls')
+#     else:
+#         def push_buffer():
+#             system('clear')
+# else:
+pushlen = termsize[1] - len(menu[0].split("\n"))-2 # ?
+def push_buffer():
+    print("\n" * pushlen)
 
 def get_getch():
     try:
@@ -65,29 +84,29 @@ if posix:
                 ch = getch()
                 if ch == "A" and pos>0: # Up arrow
                     pos-=1
-                    clear()
                     print(menu[pos])
+                    push_buffer()
                 if ch == "B" and pos<len(menu)-1: # Down arrow
                     pos+=1
-                    clear()
                     print(menu[pos])
+                    push_buffer()
         if ch == "\r":
             print("Selected")
         if ch == "q":
             exit()
         return pos
 else:
-    def menuhandle():
+    def menuhandle(pos):
         ch = getch()
         if ch == b"\xe0": # ANSI escape
             ch = getch()
-            if ch == b"P" and i>0: # Up arrow
+            if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                clear()
+                push_buffer()
                 print(menu[pos])
-            if ch == b"Q" and pos<len(menu)-1: # Down arrow
+            if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                clear()
+                push_buffer()
                 print(menu[pos])
         if ch == b"\r":
             print("Selected")
@@ -96,9 +115,8 @@ else:
         return pos
 
 
-clear()
 i=0
 print(menu[i])
-
+push_buffer()
 while 1:
     i = menuhandle(i)
