@@ -32,26 +32,19 @@ posix = True
 if name == 'nt':
     posix = False
 
-# def supports_color():
-#     plat = sys.platform
-#     supported_platform = plat != 'Pocket PC' and (plat != 'win32' or
-#                                                   'ANSICON' in environ)
-#     # isatty is not always implemented, #6223.
+# def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
+#     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
 #     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
 #     return supported_platform and is_a_tty
 
 termsize = get_terminal_size() # Returns tuple (x, y)
-# if not termsize:
-#     if not posix:
-#         def push_buffer():
-#             system('cls')
-#     else:
-#         def push_buffer():
-#             system('clear')
-# else:
-pushlen = termsize[1] - len(menu[0].split("\n"))-2 # ?
-def push_buffer():
-    print("\n" * pushlen)
+if not posix:
+    def push_buffer():
+        system('cls')
+else:
+    pushlen = termsize[1] - len(menu[0].split("\n"))-2 # ?
+    def push_buffer():
+        print("\n" * pushlen)
 
 def get_getch():
     try:
