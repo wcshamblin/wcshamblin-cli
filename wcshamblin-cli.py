@@ -32,19 +32,23 @@ posix = True
 if name == 'nt':
     posix = False
 
-# def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
-#     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
-#     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
-#     return supported_platform and is_a_tty
-
 termsize = get_terminal_size() # Returns tuple (x, y)
 if not posix: # rewriting is faster than clearing on Windows
     def push_buffer():
-        system('cls')
+        system('cls') # ANSI codes don't work without rewriting on CMD + powershell
+    push_buffer()
+    print(menu[0])
 else:
     pushlen = termsize[1] - len(menu[0].split("\n"))-2 # ?
     def push_buffer():
         print("\n" * pushlen)
+    print(menu[0])
+    push_buffer()
+
+# def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
+#     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
+#     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+#     return supported_platform and is_a_tty
 
 def get_getch():
     try:
@@ -95,21 +99,18 @@ else:
             ch = getch()
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
-                push_buffer()
                 print(menu[pos])
+                push_buffer()
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
-                push_buffer()
                 print(menu[pos])
+                push_buffer()
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
             exit()
         return pos
 
-
 i=0
-print(menu[i])
-push_buffer()
 while 1:
     i = menuhandle(i)
