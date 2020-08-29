@@ -122,10 +122,10 @@ if posix:
                 ch = getch()
                 if ch == "A" and pos>0: # Up arrow
                     pos-=1
-                    print(menu[menudex[pos]]["menu"], helplines)
+                    print(menu[menudex[pos]]["menu"]+helplines)
                 if ch == "B" and pos<len(menu)-1: # Down arrow
                     pos+=1
-                    print(menu[menudex[pos]]["menu"], helplines)
+                    print(menu[menudex[pos]]["menu"]+helplines)
         if ch == "\r":
             print("Selected")
         if ch == "q":
@@ -139,17 +139,17 @@ else:
             if ch == b"H" and i>0: # Up arrow
                 pos-=1
                 clear()
-                print(menu[menudex[pos]]["menu"],helplines)
+                print(menu[menudex[pos]]["menu"]+helplines)
             if ch == b"P" and pos<len(menu)-1: # Down arrow
                 pos+=1
                 clear()
-                print(menu[menudex[pos]]["menu"], helplines)
+                print(menu[menudex[pos]]["menu"]+helplines)
         if ch == b"\r":
             print("Selected")
         if ch == b"q":
             exit()
         return pos
 i=0
-print(menu[menudex[0]]["menu"], helplines)
+print(menu[menudex[0]]["menu"]+helplines)
 while 1:
     i = menuhandle(i)
