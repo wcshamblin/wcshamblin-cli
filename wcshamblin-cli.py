@@ -2,6 +2,8 @@ from os import system, name, environ
 from shutil import get_terminal_size
 import sys
 from webbrowser import open_new_tab
+
+# MAKE THIS A FOR LOOP FOR GENNING MENUS
 menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
 
 Stuff
@@ -39,16 +41,35 @@ More Stuff
 
 Source Code
 """, "action": None}, "Source Code": {"menu": """Website
-                                         ___  
-Stuff                                   |__ \\ 
-                                           ) |
-More Stuff                                / / 
-                                         |_|  
-Other Stuff                               _
-                                         (_)  
+
+Stuff
+
+More Stuff
+
+Other Stuff
+
 \u001b[0m\u001b[7mSource Code\u001b[0m
 """, "action": None}}
 
+asciiart = {"Website": """             _____
+          .-'.  ':'-.
+        .''::: .:    '.
+       /   :::::'      \\
+      ;.    ':' `       ;
+      |       '..       |
+      ; '      ::::.    ;
+       \\       '::::   /
+        '.      :::  .'
+          '-.___'_.-'
+""", "Source Code":""" _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |     | |
+| |_____| |
+|_|_____|_|
+"""
+}
 
 menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
 
@@ -60,9 +81,9 @@ posix = True
 if name == 'nt':
     posix = False
 
-if not posix: # rewriting is faster than pushing out of buffer on Windows
+if not posix: # Rewriting retains persistence of vision on Windows
     def clear():
-        system('cls') # ANSI codes don't work without rewriting on CMD + powershell
+        system('cls') # ANSI codes don't work without rewriting on CMD + powershell for some fucking reason
     clear()
 
 # def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
@@ -77,8 +98,8 @@ def get_getch():
         # Not POSIX
         import msvcrt
         return msvcrt.getch
-    import sys, tty
     # POSIX
+    import sys, tty
     def getch():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
