@@ -3,7 +3,18 @@ from shutil import get_terminal_size
 import sys
 from webbrowser import open_new_tab
 
+termsize = get_terminal_size() # Returns tuple (x, y)
+midx = int(termsize[0]/2)
+midy = int(termsize[1]/2)
+
+menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
+pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
+
 # MAKE THIS A FOR LOOP FOR GENNING MENUS
+# menu={}
+# for menuitem in menudex:
+#     menu[menuitem] = {"menu": ''.join([])}
+
 menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
 
 Stuff
@@ -13,7 +24,7 @@ More Stuff
 Other Stuff
 
 Source Code
-""", "action": None},"Stuff": {"menu": """Website
+"""+pushm, "action": None},"Stuff": {"menu": """Website
 
 \u001b[0m\u001b[7mStuff\u001b[0m
 
@@ -22,7 +33,7 @@ More Stuff
 Other Stuff
 
 Source Code
-""", "action": None}, "More Stuff": {"menu": """Website
+"""+pushm, "action": None}, "More Stuff": {"menu": """Website
 
 Stuff
 
@@ -31,7 +42,7 @@ Stuff
 Other Stuff
 
 Source Code
-""", "action": None}, "Other Stuff": {"menu": """Website
+"""+pushm, "action": None}, "Other Stuff": {"menu": """Website
 
 Stuff
 
@@ -40,7 +51,7 @@ More Stuff
 \u001b[0m\u001b[7mOther Stuff\u001b[0m
 
 Source Code
-""", "action": None}, "Source Code": {"menu": """Website
+"""+pushm, "action": None}, "Source Code": {"menu": """Website
 
 Stuff
 
@@ -49,9 +60,13 @@ More Stuff
 Other Stuff
 
 \u001b[0m\u001b[7mSource Code\u001b[0m
-""", "action": None}}
+"""+pushm, "action": None}}
 
-asciiart = {"Website": """             _____
+
+helplines = " "*(midx-16)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
+
+
+asciiart = {"Website": "\n"*(midy-5)+"""             _____
           .-'.  ':'-.
         .''::: .:    '.
        /   :::::'      \\
@@ -61,22 +76,43 @@ asciiart = {"Website": """             _____
        \\       '::::   /
         '.      :::  .'
           '-.___'_.-'
-""", "Source Code":""" _________
+
+""", "Stuff": "\n"*(midy-4)+""" _________
 |^|     | |
 | |_____| |
 |  _____  |
 | |     | |
 | |_____| |
 |_|_____|_|
-"""
-}
 
-menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
+""", "More Stuff": "\n"*(midy-4)+""" _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |     | |
+| |_____| |
+|_|_____|_|
 
-termsize = get_terminal_size() # Returns tuple (x, y)
-midlim = int(termsize[0]/2)
-helplines = "\n"*(termsize[1]-(len(menu[menudex[0]]["menu"].split("\n"))+2))+" "*(midlim-16)+"arrows to navigate, q to exit\n"+" "*(midlim-8)+"enter to execute"
+""", "Other Stuff": "\n"*(midy-4)+""" _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |     | |
+| |_____| |
+|_|_____|_|
+""", "Source Code": "\n"*(midy-4)+""" _________
+|^|     | |
+| |_____| |
+|  _____  |
+| |     | |
+| |_____| |
+|_|_____|_|
+"""}
 
+for menuitem, menutext in menu.items():
+    # append asciiart[menuitem] to menutext
+    for ml, al in zip(menutext["menu"].split("\n"), asciiart[menuitem].split("\n")):
+        print(ml, al)
 posix = True
 if name == 'nt':
     posix = False
