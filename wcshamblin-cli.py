@@ -2,18 +2,19 @@ from os import system, name, environ
 from shutil import get_terminal_size
 import sys
 from webbrowser import open_new_tab
+import re
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
 menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
-pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
 
 # MAKE THIS A FOR LOOP FOR GENNING MENUS
 # menu={}
 # for menuitem in menudex:
 #     menu[menuitem] = {"menu": ''.join([])}
+pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
 
 menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
 
@@ -62,57 +63,64 @@ Other Stuff
 \u001b[0m\u001b[7mSource Code\u001b[0m
 """+pushm, "action": None}}
 
-
 helplines = " "*(midx-16)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
+asciiart = {"Website": "       _____       \n"\
+"    .-'.  ':'-.    \n"\
+"  .''::: .:    '.  \n"\
+" /   :::::'      \\ \n"\
+";.    ':' `       ;\n"\
+"|       '..       |\n"\
+"; '      ::::.    ;\n"\
+" \\       '::::   / \n"\
+"  '.      :::  .'  \n"\
+"    '-.___'_.-`     ", "Stuff": " _________ \n"\
+"|^|     | |\n"\
+"| |_____| |\n"\
+"|  _____  |\n"\
+"| |     | |\n"\
+"| |_____| |\n"\
+"|_|_____|_| ", "More Stuff": " _________ \n"\
+"|^|     | |\n"\
+"| |_____| |\n"\
+"|  _____  |\n"\
+"| |     | |\n"\
+"| |_____| |\n"\
+"|_|_____|_| ", "Other Stuff": " _________ \n"\
+"|^|     | |\n"\
+"| |_____| |\n"\
+"|  _____  |\n"\
+"| |     | |\n"\
+"| |_____| |\n"\
+"|_|_____|_| ", "Source Code": " _________ \n"\
+"|^|     | |\n"\
+"| |_____| |\n"\
+"|  _____  |\n"\
+"| |     | |\n"\
+"| |_____| |\n"\
+"|_|_____|_| "}
 
-asciiart = {"Website": "\n"*(midy-5)+"""             _____
-          .-'.  ':'-.
-        .''::: .:    '.
-       /   :::::'      \\
-      ;.    ':' `       ;
-      |       '..       |
-      ; '      ::::.    ;
-       \\       '::::   /
-        '.      :::  .'
-          '-.___'_.-'
-
-""", "Stuff": "\n"*(midy-4)+""" _________
-|^|     | |
-| |_____| |
-|  _____  |
-| |     | |
-| |_____| |
-|_|_____|_|
-
-""", "More Stuff": "\n"*(midy-4)+""" _________
-|^|     | |
-| |_____| |
-|  _____  |
-| |     | |
-| |_____| |
-|_|_____|_|
-
-""", "Other Stuff": "\n"*(midy-4)+""" _________
-|^|     | |
-| |_____| |
-|  _____  |
-| |     | |
-| |_____| |
-|_|_____|_|
-""", "Source Code": "\n"*(midy-4)+""" _________
-|^|     | |
-| |_____| |
-|  _____  |
-| |     | |
-| |_____| |
-|_|_____|_|
-"""}
-
+ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+# Concat menu and asciiart
 for menuitem, menutext in menu.items():
-    # append asciiart[menuitem] to menutext
-    for ml, al in zip(menutext["menu"].split("\n"), asciiart[menuitem].split("\n")):
-        print(ml, al)
+    concat = ""
+    menusplit = menutext["menu"].splitlines(True)
+    asciisplit = asciiart[menuitem].splitlines(True)
+
+    if len(menusplit) > len(asciisplit):
+        asciisplit = asciisplit+['\n' for i in range((len(menusplit)-len(asciisplit)))]
+    print(menusplit, asciisplit, type(menusplit), type(asciisplit))
+
+    if len(asciisplit) > len(menusplit):
+        menusplit = menusplit+['\n' for i in range((len(asciisplit)-len(menusplit)))]
+
+    for ml, al in zip(menusplit, asciisplit):
+        ml = ml.replace("\n", "")
+        alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 1 col - REMEMBER ANSI EXTENDS
+        concat+=ml+alignto+al
+    pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Push
+    menu[menuitem]["menu"] = concat+pushm
+
 posix = True
 if name == 'nt':
     posix = False
