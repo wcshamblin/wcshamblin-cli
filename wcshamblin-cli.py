@@ -4,63 +4,21 @@ import sys
 from webbrowser import open_new_tab
 import re
 
+def website():
+    print("website lol")
+
 termsize = get_terminal_size() # Returns tuple (x, y)
 
 midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
-# MAKE THIS A FOR LOOP FOR GENNING MENUS THIS IS MESSY
-# menu={}
-# for menuitem in menudex:
-#     menu[menuitem] = {"menu": ''.join([])}
 menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
+actions = [website, website, website, website, website]
+
 pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
-menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
-
-Stuff
-
-More Stuff
-
-Other Stuff
-
-Source Code
-"""+pushm, "action": None},"Stuff": {"menu": """Website
-
-\u001b[0m\u001b[7mStuff\u001b[0m
-
-More Stuff
-
-Other Stuff
-
-Source Code
-"""+pushm, "action": None}, "More Stuff": {"menu": """Website
-
-Stuff
-
-\u001b[0m\u001b[7mMore Stuff\u001b[0m
-
-Other Stuff
-
-Source Code
-"""+pushm, "action": None}, "Other Stuff": {"menu": """Website
-
-Stuff
-
-More Stuff
-
-\u001b[0m\u001b[7mOther Stuff\u001b[0m
-
-Source Code
-"""+pushm, "action": None}, "Source Code": {"menu": """Website
-
-Stuff
-
-More Stuff
-
-Other Stuff
-
-\u001b[0m\u001b[7mSource Code\u001b[0m
-"""+pushm, "action": None}}
+menu = {}
+for menuitem in menudex:
+    menu[menuitem] = {"menu": '\n\n'.join([("\u001b[0m\u001b[7m"+menutext+"\u001b[0m" if menutext is menuitem else menutext) for menutext in menudex])+pushm}
 
 helplines = " "*(midx-14)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
@@ -174,7 +132,7 @@ if posix:
                     pos+=1
                     print(menu[menudex[pos]]["menu"]+helplines)
         if ch == "\r":
-            print("Selected")
+            actions[pos]()
         if ch == "q":
             exit()
         return pos
