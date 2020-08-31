@@ -5,12 +5,18 @@ from webbrowser import open_new_tab
 import re
 
 termsize = get_terminal_size() # Returns tuple (x, y)
-midx = int(termsize[0]/2)
-midy = int(termsize[1]/2)
 
 menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
 
-# MAKE THIS A FOR LOOP FOR GENNING MENUS
+if termsize[0] >= max(len(menutitle) for menutitle in menudex) + 21:
+    ascii_enabled = True
+else:
+    ascii_enabled = False
+
+midx = int(termsize[0]/2)
+midy = int(termsize[1]/2)
+
+# MAKE THIS A FOR LOOP FOR GENNING MENUS THIS IS MESSY
 # menu={}
 # for menuitem in menudex:
 #     menu[menuitem] = {"menu": ''.join([])}
@@ -63,7 +69,7 @@ Other Stuff
 \u001b[0m\u001b[7mSource Code\u001b[0m
 """+pushm, "action": None}}
 
-helplines = " "*(midx-16)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
+helplines = " "*(midx-14)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
 asciiart = {"Website": "       _____       \n"\
 "    .-'.  ':'-.    \n"\
@@ -100,26 +106,26 @@ asciiart = {"Website": "       _____       \n"\
 "| |_____| |\n"\
 "|_|_____|_| "}
 
-ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-# Concat menu and asciiart
-for menuitem, menutext in menu.items():
-    concat = ""
-    menusplit = menutext["menu"].splitlines(True)
-    asciisplit = asciiart[menuitem].splitlines(True)
+if ascii_enabled:
+    ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    # Concat menu and asciiart
+    for menuitem, menutext in menu.items():
+        concat = ""
+        menusplit = menutext["menu"].splitlines(True)
+        asciisplit = asciiart[menuitem].splitlines(True)
 
-    if len(menusplit) > len(asciisplit):
-        asciisplit = asciisplit+['\n' for i in range((len(menusplit)-len(asciisplit)))]
-    print(menusplit, asciisplit, type(menusplit), type(asciisplit))
+        if len(menusplit) > len(asciisplit):
+            asciisplit = asciisplit+['\n' for i in range((len(menusplit)-len(asciisplit)))]
 
-    if len(asciisplit) > len(menusplit):
-        menusplit = menusplit+['\n' for i in range((len(asciisplit)-len(menusplit)))]
+        if len(asciisplit) > len(menusplit):
+            menusplit = menusplit+['\n' for i in range((len(asciisplit)-len(menusplit)))]
 
-    for ml, al in zip(menusplit, asciisplit):
-        ml = ml.replace("\n", "")
-        alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 1 col - REMEMBER ANSI EXTENDS
-        concat+=ml+alignto+al
-    pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Push
-    menu[menuitem]["menu"] = concat+pushm
+        for ml, al in zip(menusplit, asciisplit):
+            ml = ml.replace("\n", "")
+            alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 1 col - REMEMBER ANSI EXTENDS
+            concat+=ml+alignto+al
+        pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Push
+        menu[menuitem]["menu"] = concat+pushm
 
 posix = True
 if name == 'nt':
