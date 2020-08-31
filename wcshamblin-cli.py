@@ -6,13 +6,6 @@ import re
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 
-menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
-
-if termsize[0] >= max(len(menutitle) for menutitle in menudex) + 21:
-    ascii_enabled = True
-else:
-    ascii_enabled = False
-
 midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
@@ -20,8 +13,8 @@ midy = int(termsize[1]/2)
 # menu={}
 # for menuitem in menudex:
 #     menu[menuitem] = {"menu": ''.join([])}
+menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
 pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
-
 menu = {"Website": {"menu": """\u001b[0m\u001b[7mWebsite\u001b[0m
 
 Stuff
@@ -106,6 +99,10 @@ asciiart = {"Website": "       _____       \n"\
 "| |_____| |\n"\
 "|_|_____|_| "}
 
+ascii_enabled = False
+if termsize[0] >= max(len(menutitle) for menutitle in menudex)+max(max(len(asciiline) for asciiline in asciiline.split("\n")) for asciiline in asciiart.values())+3:
+    ascii_enabled = True
+
 if ascii_enabled:
     ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
     # Concat menu and asciiart
@@ -122,7 +119,7 @@ if ascii_enabled:
 
         for ml, al in zip(menusplit, asciisplit):
             ml = ml.replace("\n", "")
-            alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 1 col - REMEMBER ANSI EXTENDS
+            alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 2 cols
             concat+=ml+alignto+al
         pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Push
         menu[menuitem]["menu"] = concat+pushm
@@ -131,7 +128,7 @@ posix = True
 if name == 'nt':
     posix = False
 
-if not posix: # Rewriting retains persistence of vision on Windows
+if not posix: # Rewriting is the only way to retain persistence of vision on Windows. Maybe it's because of the buflen?
     def clear():
         system('cls') # ANSI codes don't work without rewriting on CMD + powershell for some fucking reason
     clear()
