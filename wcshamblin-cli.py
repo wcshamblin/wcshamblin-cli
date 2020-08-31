@@ -5,7 +5,7 @@ from webbrowser import open_new_tab
 import re
 
 def website():
-    print("website lol")
+    print("Execute function")
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 
