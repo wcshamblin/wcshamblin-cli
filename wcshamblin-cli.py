@@ -109,11 +109,6 @@ if not posix: # Rewriting is the only way to retain persistence of vision on Win
         system('cls') # ANSI codes don't work without rewriting on CMD + powershell for some fucking reason
     clear()
 
-# def ansi_active(): # Taken from https://github.com/django/django/blob/master/django/core/management/color.py
-#     supported_platform = sys.platform != 'win32' or 'ANSICON' in os.environ
-#     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
-#     return supported_platform and is_a_tty
-
 def get_getch():
     try:
         import termios
