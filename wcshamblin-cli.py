@@ -1,18 +1,21 @@
 from os import system, name, environ
 from shutil import get_terminal_size
 import sys
-from webbrowser import open_new_tab
+import traceback
+from webbrowser import open as open_tab
 import re
 
 def website():
-    print("https://wcshambl.in/")
+    if not open_tab("https://wcshambl.in", 2):
+        print("Couldn't open to webbrowser - visit https://wcshambl.in")
 
 def sourcecode():
-    print("https://github.com/wcshamblin/wcshamblin-cli")
+    if not open_tab("https://github.com/wcshamblin/wcshamblin-cli", 2):
+        print("Couldn't open to webbrowser - visit https://github.com/wcshamblin/wcshamblin-cli")
 
 def contact():
-    print("mailto://wcshamblin@gmail.com")
-
+    if not open_tab("mailto://wcshamblin@gmail.com", 2):
+        print("Couldn't open to webbrowser - visit https://github.com/wcshamblin/wcshamblin-cli")
 termsize = get_terminal_size() # Returns tuple (x, y)
 
 midx = int(termsize[0]/2)
