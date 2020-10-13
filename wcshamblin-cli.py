@@ -7,15 +7,15 @@ import re
 
 def website():
     if not open_tab("https://wcshambl.in", 2):
-        print("Couldn't open to webbrowser - visit \u001b[0m\u001b[7mhttps://wcshambl.in\u001b[0m")
+        print("Couldn't open to webbrowser - visit https://wcshambl.in")
 
 def sourcecode():
     if not open_tab("https://github.com/wcshamblin/wcshamblin-cli", 2):
-        print("Couldn't open to webbrowser - visit \u001b[0m\u001b[7mhttps://github.com/wcshamblin/wcshamblin-cli\u001b[0m")
+        print("Couldn't open to webbrowser - visit https://github.com/wcshamblin/wcshamblin-cli")
 
 def contact():
     if not open_tab("mailto://wcshamblin@gmail.com", 2):
-        print("Couldn't open to webbrowser - visit \u001b[0m\u001b[7mmailto://wcshamblin@gmail.com\u001b[0m")
+        print("Couldn't open to webbrowser - visit mailto://wcshamblin@gmail.com")
 termsize = get_terminal_size() # Returns tuple (x, y)
 
 midx = int(termsize[0]/2)
