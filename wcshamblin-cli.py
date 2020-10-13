@@ -5,7 +5,9 @@ from webbrowser import open_new_tab
 import re
 
 def website():
-    print("Execute function")
+    print("Open website")
+def sourcecode():
+    print("Open GH")
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 
@@ -13,7 +15,7 @@ midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
 menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
-actions = [website, website, website, website, website]
+actions = {"Website": website, "Stuff": website, "More Stuff": website, "Other Stuff": website, "Source Code": sourcecode}
 
 pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
 menu = {}
@@ -132,7 +134,7 @@ if posix:
                     pos+=1
                     print(menu[menudex[pos]]["menu"]+helplines)
         if ch == "\r":
-            actions[pos]()
+            actions[menudex[pos]]()
         if ch == "q":
             exit()
         return pos
