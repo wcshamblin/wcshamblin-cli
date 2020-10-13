@@ -6,15 +6,19 @@ import re
 
 def website():
     print("Open website")
+
 def sourcecode():
     print("Open GH")
+
+def contact():
+    print("mailto://wcshamblin@gmail.com")
 
 termsize = get_terminal_size() # Returns tuple (x, y)
 
 midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
-menudex = ["Website", "Stuff", "More Stuff", "Other Stuff", "Source Code"]
+menudex = ["Website", "Stuff", "More Stuff", "Source Code", "Contact"]
 actions = {"Website": website, "Stuff": website, "More Stuff": website, "Other Stuff": website, "Source Code": sourcecode}
 
 pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
@@ -24,7 +28,8 @@ for menuitem in menudex:
 
 helplines = " "*(midx-14)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
-asciiart = {"Website": "       _____       \n"\
+asciiart = {"Website":
+"       _____       \n"\
 "    .-'.  ':'-.    \n"\
 "  .''::: .:    '.  \n"\
 " /   :::::'      \\ \n"\
@@ -33,31 +38,42 @@ asciiart = {"Website": "       _____       \n"\
 "; '      ::::.    ;\n"\
 " \\       '::::   / \n"\
 "  '.      :::  .'  \n"\
-"    '-.___'_.-`     ", "Stuff": " _________ \n"\
+"    '-.___'_.-`     ",
+
+"Stuff":
+" _________ \n"\
 "|^|     | |\n"\
 "| |_____| |\n"\
 "|  _____  |\n"\
 "| |     | |\n"\
 "| |_____| |\n"\
-"|_|_____|_| ", "More Stuff": " _________ \n"\
+"|_|_____|_| ",
+
+"More Stuff":
+" _________ \n"\
 "|^|     | |\n"\
 "| |_____| |\n"\
 "|  _____  |\n"\
 "| |     | |\n"\
 "| |_____| |\n"\
-"|_|_____|_| ", "Other Stuff": " _________ \n"\
+"|_|_____|_| ",
+
+"Source Code":
+" _________ \n"\
 "|^|     | |\n"\
 "| |_____| |\n"\
 "|  _____  |\n"\
 "| |     | |\n"\
 "| |_____| |\n"\
-"|_|_____|_| ", "Source Code": " _________ \n"\
-"|^|     | |\n"\
-"| |_____| |\n"\
-"|  _____  |\n"\
-"| |     | |\n"\
-"| |_____| |\n"\
-"|_|_____|_| "}
+"|_|_____|_| ",
+
+"Contact":
+" __________________ \n"\
+"|\\                /|\n"\
+"| \\              / |\n"\
+"| /\\____________/\\ |\n"\
+"|/                \\|\n"\
+"|__________________| "}
 
 ascii_enabled = False
 if termsize[0] >= max(len(menutitle) for menutitle in menudex)+max(max(len(asciiline) for asciiline in asciiline.split("\n")) for asciiline in asciiart.values())+3:
