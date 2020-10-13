@@ -19,7 +19,7 @@ midx = int(termsize[0]/2)
 midy = int(termsize[1]/2)
 
 menudex = ["Website", "Stuff", "More Stuff", "Source Code", "Contact"]
-actions = {"Website": website, "Stuff": website, "More Stuff": website, "Other Stuff": website, "Source Code": sourcecode}
+actions = {"Website": website, "Stuff": website, "More Stuff": website, "Source Code": sourcecode, "Contact": contact}
 
 pushm = "\n"*(termsize[1]-(len(menudex)*2+2))
 menu = {}
@@ -28,6 +28,7 @@ for menuitem in menudex:
 
 helplines = " "*(midx-14)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
+# Min linenum and linelen have to be uniform, or something
 asciiart = {"Website":
 "       _____       \n"\
 "    .-'.  ':'-.    \n"\
@@ -68,19 +69,20 @@ asciiart = {"Website":
 "|_|_____|_| ",
 
 "Contact":
-" __________________ \n"\
-"|\\                /|\n"\
-"| \\              / |\n"\
-"| /\\____________/\\ |\n"\
-"|/                \\|\n"\
-"|__________________| "}
+" ____________________ \n"\
+"|\\                  /|\n"\
+"| \\                / |\n"\
+"|  \\              /  |\n"\
+"|  /\\____________/\\  |\n"\
+"| /                \\ |\n"\
+"|/__________________\\| "}
 
 ascii_enabled = False
 if termsize[0] >= max(len(menutitle) for menutitle in menudex)+max(max(len(asciiline) for asciiline in asciiline.split("\n")) for asciiline in asciiart.values())+3:
     ascii_enabled = True
 
 if ascii_enabled:
-    ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    ansi_re = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])') # Regex for ANSI
     # Concat menu and asciiart
     for menuitem, menutext in menu.items():
         concat = ""
@@ -97,7 +99,7 @@ if ascii_enabled:
             ml = ml.replace("\n", "")
             alignto = " "*(termsize[0]-len(ansi_re.sub('', ml))-len(al)-2) # Right align art + 2 cols
             concat+=ml+alignto+al
-        pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Push
+        pushm = "\n"*(termsize[1]-len(concat.split("\n"))-3) # Pushlen
         menu[menuitem]["menu"] = concat+pushm
 
 posix = True
