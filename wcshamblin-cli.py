@@ -5,10 +5,10 @@ from webbrowser import open_new_tab
 import re
 
 def website():
-    print("Open website")
+    print("https://wcshambl.in/")
 
 def sourcecode():
-    print("Open GH")
+    print("https://github.com/wcshamblin/wcshamblin-cli")
 
 def contact():
     print("mailto://wcshamblin@gmail.com")
@@ -28,7 +28,7 @@ for menuitem in menudex:
 
 helplines = " "*(midx-14)+"arrows to navigate, q to exit\n"+" "*(midx-8)+"enter to execute"
 
-# Min linenum and linelen have to be uniform, or something
+# Min linenum has to be uniform or something
 asciiart = {"Website":
 "       _____       \n"\
 "    .-'.  ':'-.    \n"\
@@ -165,7 +165,7 @@ else:
                 clear()
                 print(menu[menudex[pos]]["menu"]+helplines)
         if ch == b"\r":
-            print("Selected")
+            actions[menudex[pos]]()
         if ch == b"q":
             exit()
         return pos
