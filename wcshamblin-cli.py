@@ -14,7 +14,7 @@ def sourcecode():
         print("Couldn't open to webbrowser - visit https://github.com/wcshamblin/wcshamblin-cli")
 
 def contact():
-    if not open_tab("mailto://wcshamblin@gmail.com", 2):
+    if not open_tab("mailto:wcshamblin@gmail.com", 2):
         print("Couldn't open to webbrowser - visit mailto:wcshamblin@gmail.com")
 termsize = get_terminal_size() # Returns tuple (x, y)
 
