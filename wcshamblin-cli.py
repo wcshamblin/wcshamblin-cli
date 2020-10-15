@@ -15,7 +15,7 @@ def sourcecode():
 
 def contact():
     if not open_tab("mailto://wcshamblin@gmail.com", 2):
-        print("Couldn't open to webbrowser - visit mailto://wcshamblin@gmail.com")
+        print("Couldn't open to webbrowser - visit mailto:wcshamblin@gmail.com")
 termsize = get_terminal_size() # Returns tuple (x, y)
 
 midx = int(termsize[0]/2)
