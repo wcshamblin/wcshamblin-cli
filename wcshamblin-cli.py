@@ -152,6 +152,7 @@ if posix:
         if ch == "\r":
             actions[menudex[pos]]()
         if ch == "q":
+            print("\x1b[?25h")
             exit()
         return pos
 else:
@@ -170,9 +171,11 @@ else:
         if ch == b"\r":
             actions[menudex[pos]]()
         if ch == b"q":
+            print("\x1b[?25h")
             exit()
         return pos
 i=0
+print("\x1b[?25l")
 print(menu[menudex[0]]["menu"]+helplines)
 while 1:
     i = menuhandle(i)
